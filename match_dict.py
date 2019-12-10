@@ -1,13 +1,33 @@
 # coding=UTF-8
 
 def read_dict(dict_file):
-    dict = set()
-    file = open(dict_file, 'r')
+    set_dict = set()
+    in_file = open(dict_file, 'r')
 
-    for line in file:
-        dict.add(line.rstrip())
+    for line in in_file:
+        set_dict.add(line.rstrip())
 
-    return dict
+    return set_dict
+
+def read_dict_map(dict_file):
+    kv_dict = dict()
+    in_file = open(dict_file, 'r')
+
+    for line in in_file:
+        toks = line.rstrip().split('\t')
+        if len(toks) != 4:
+            print "invalid line:" + line
+            continue
+
+        if toks[1] < 100:
+            print "unexpected state:" + line
+            continue
+
+        kv_dict[toks[0]] = toks[3]
+
+    in_file.close()
+
+    return kv_dict
 
 def match(dict, target_file, match_file, unmatch_file):
     in_file = open(target_file, 'r')
@@ -27,5 +47,5 @@ if __name__ == "__main__":
     target_file = "todo"
     match_file = "match.out"
     unmatch_file = "unmatch.out"
-    dict = read_dict(dict_file)
-    match(dict, target_file, match_file, unmatch_file)
+    dict1 = read_dict(dict_file)
+    match(dict1, target_file, match_file, unmatch_file)
